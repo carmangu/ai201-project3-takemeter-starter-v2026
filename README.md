@@ -39,50 +39,92 @@
 
 ## What This Does
 
-<!-- Your community, and what your classifier sorts posts into. Three or four
-     sentences. -->
-
-
+TakeMeter classifies posts from r/nba into four labels: `analysis`,
+`hot_take`, `reaction`, and `meme`. The goal is to sort high-effort
+discussion from emotional noise and community in-jokes. The classifier
+is a fine-tuned small language model, trained on 200 posts I labeled
+by hand from the public subreddit.
 
 ---
 
 ## Label Taxonomy
 
-<!-- Each label: a one-sentence definition and two real examples from your
-     reading. Then your decision rule for the hardest boundary.
+Community: r/nba. Posts are sorted into four labels.
 
-     The decision rule is worth a point on its own and it's the thing most
-     people leave out. Every taxonomy has a hardest boundary. Name yours. -->
-
-### `label_one`
+### `analysis`
 
 **Definition:**
+Explains why something happened, using checkable
+evidence (stats, tactics, history) and proposing a mechanism — not
+just a conclusion.
 
 **Example 1:**
->
+> The Knicks' offensive rebound rate this series is 38%, driven mostly
+> by Hart timing his weak-side cuts.
 
 **Example 2:**
->
+> Comparing the 2022 and 2026 defenses: why drop coverage stopped
+> working against Luka.
 
-### `label_two`
+### `hot_take`
 
 **Definition:**
+A confident subjective claim about rankings, legacy, or
+trades, made to provoke argument rather than explain anything.
 
 **Example 1:**
->
+> If Wemby wins this year, is he already above KD all-time?
 
 **Example 2:**
->
+> Thibs' minutes rotation will never win a championship.
+
+### `reaction`
+
+**Definition:**
+An immediate emotional response to a specific play or
+moment, with no argument attached. Usually short, usually about the
+last play or the current score.
+
+**Example 1:**
+> OH MY GOD BRUNSON
+
+**Example 2:**
+> What is this defense? I'm going to bed.
+
+### `meme`
+
+**Definition:**
+A post whose primary purpose is humor, satire, or a
+running community joke, not a serious take.
+
+**Example 1:**
+> Give the WCF MVP to the refs. [image: ref in a Knicks jersey]
+
+**Example 2:**
+> Ty Lue said he's working on making a 20-point lead look like a
+> 20-point deficit.
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `analysis` and `hot_take`.
 
-**The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+**The decision rule I used every time:** If the post proposes a
+*mechanism* — a chain of cause and effect a reader could check
+("because the weak-side rotation was late, the corner was open") — it
+is `analysis`, even if the tone is heated. If the post only stacks
+evidence to support a preset verdict and never decomposes the
+mechanism, it is `hot_take`.
 
+Borderline example that defined the rule:
 
+> Brunson is shooting 38% from the field this series. People keep
+> calling him a top-5 PG but the numbers say he's been average. If the
+> Knicks lose this round, he's not a top-10 player.
+
+This has a stat (38%) and a verdict (not top-10). It reads like
+analysis. But it never explains *why* the number is low — no
+defensive scheme, no shot-quality breakdown. The stat is decoration
+for a preset conclusion, so it is `hot_take`.
 
 ---
 
