@@ -5,6 +5,7 @@
 #
 # Delete the examples below and put yours in.
 
-analysis: makes an argument backed by a specific, checkable fact
-hot_take: a confident claim with no support offered
-reaction: an immediate response to something that just happened
+analysis: explains why something happened, using checkable evidence (stats, tactics, history) and proposing a mechanism, not just a conclusion
+hot_take: a confident subjective claim about rankings, legacy, or trades, made to provoke argument rather than explain anything
+reaction: an immediate emotional response to a specific play or moment, with no argument attached
+meme: a post whose primary purpose is humor, satire, or a running community joke, not a serious take
