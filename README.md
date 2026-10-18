@@ -208,26 +208,21 @@ The model predicted `reaction` on every test example, which gives 63% accuracy b
 
 ## How I Used AI
 
-<!-- Two specific moments — what you asked, what came back, what you changed.
-
-     ⚠️ Plus disclosure of any pre-labelling. If you had a model pre-label a
-     batch and then read and corrected every one, say that. It's an allowed
-     workflow and disclosing it costs you nothing. Not disclosing it is the
-     problem. -->
-
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I asked Claude to help me tighten my label definitions for `analysis` vs `hot_take`.
+- *What came back:* Its first suggestion was "analysis uses data, hot_take does not." That is too loose — many hot takes cite stats.
+- *What I changed:* I rewrote the decision rule around *mechanism* instead of *evidence*: analysis proposes a chain of cause and effect a reader could check; hot_take uses evidence only to support a preset verdict. That is what the rule in my `Label Taxonomy` section says.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I gave Claude my label definitions and batches of 30 posts at a time, asking it to label each post.
+- *What came back:* Its labels for `reaction` and `hot_take` were good, but it over-labeled `analysis` for posts that used stats without proposing a mechanism. That is exactly the boundary I had written a rule for, applied the wrong way.
+- *What I changed:* I manually re-checked every AI-labeled row against my decision rule and corrected the `analysis` → `hot_take` errors. Every row in `labels.csv` marked `pre-labeled` was reviewed by me after AI pre-labeling; the first 20 rows are marked `cold` because I labeled them with no help.
 
 **Pre-labelling disclosure:**
+
+Yes. The first 20 rows were labeled by hand without Claude. The remaining 160 were Claude pre-labeled and then manually reviewed and corrected. `meme` has only 2 examples total — that is not a pre-labeling error, it is a genuine scarcity in the data.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
