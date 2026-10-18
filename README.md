@@ -165,7 +165,7 @@ for a preset conclusion, so it is `hot_take`.
 
 ## The Training Run
 
-**Base model:** The model bundled with the starter notebook (a small pre-trained language model).
+**Base model:** `distilbert-base-uncased`
 
 **Settings:**
 - Epochs: 3
@@ -174,17 +174,35 @@ for a preset conclusion, so it is `hot_take`.
 - Max sequence length: 128
 - Device: CPU
 - Torch version: 2.14.1+cpu
+- Seed: 42
 
-**Anything I changed from the defaults, and why:**
-Nothing. I ran the notebook with the default settings to establish a baseline for the next unit.
+**Anything I changed from the defaults, and why:** Nothing. I used the default settings.
 
 **Split sizes:**
-The notebook automatically splits the data 70/15/15 (train/val/test). With 180 rows, this means roughly:
-- Train: 126
-- Validation: 27
-- Test: 27
 
-*Note on `meme`:* With only 2 `meme` examples in the entire dataset, the test split will likely contain 0 or 1 example of this class. This will make the `meme` F1 score extremely volatile and likely very low.
+| Label | Train | Val | Test |
+|---|---|---|---|
+| `analysis` | 32 | 7 | 7 |
+| `hot_take` | 12 | 3 | 3 |
+| `reaction` | 80 | 17 | 17 |
+| `meme` | 2 | 0 | **0** |
+| **Total** | **126** | **27** | **27** |
+
+**Note on `meme`:** With 2 examples total and 0 in the test split, `meme` cannot be evaluated on this run. Its F1 is 0.000 by definition, and no amount of training fixes that without more data.
+
+**Training result (seed 42):**
+
+```
+accuracy  0.630
+macro F1  0.258
+
+analysis   F1 0.000
+hot_take   F1 0.000
+reaction   F1 0.773
+meme       F1 0.000
+```
+
+The model predicted `reaction` on every test example, which gives 63% accuracy because `reaction` is 63% of the data. It learned the majority class and nothing else. That is a real finding to diagnose in the next unit, not a mistake in this unit's setup.
 
 ---
 
