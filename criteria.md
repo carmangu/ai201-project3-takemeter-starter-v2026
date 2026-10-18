@@ -51,63 +51,74 @@ whether you hit them:
 
 ---
 
-## 1.
+## 1. Overall accuracy ≥ 0.60 on the held-out set
 
-<!-- Your criterion. It must name a number. -->
+On the held-out test set, the trained model's overall accuracy is at
+least 0.60.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 2.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** Four labels means a random guesser gets about
+0.25. My largest label (`analysis`) is likely to cover around 40% of
+the data, so a model that only ever predicts the majority class would
+land near 0.40. 0.60 is a real improvement over both, and reachable
+for a small fine-tuned model on 200 posts. I set it at 0.60 rather
+than 0.65 because the test split will only have about 30 posts, and
+accuracy on 30 examples moves by 0.03 for a single classification
+change. 0.60 is a floor I can defend; 0.65 would be optimistic.
 
 ---
 
-## 3.
+## 2. Macro F1 ≥ 0.55
 
-<!-- Your criterion. -->
+The macro-averaged F1 across all four labels is at least 0.55 on the
+held-out set.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 4.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** Macro F1 weights every label equally, so it
+catches a model that learns the majority class and ignores the rest.
+A model that hits 0.60 accuracy by only predicting `analysis` would
+have a macro F1 near 0.20. 0.55 requires every label to be learned to
+some degree, which is what a usable classifier needs.
 
 ---
 
-## 5.
+## 3. Every label reaches F1 ≥ 0.40
 
-<!-- Your criterion. -->
+No label scores below 0.40 F1 on the held-out set — including the
+smallest one.
 
+**Why this target:** A label below 0.40 is not being learned at all;
+it is the model guessing or defaulting. I set 0.40 rather than 0.50
+because my smallest label (`meme` or `reaction`) will only have about
+8 examples in the test split, and an F1 on 8 examples moves a lot
+between seeds. 0.40 is a real floor for 8 examples; 0.50 would set
+the smallest label up to fail on variance alone.
 
+---
 
-**Why this target:**
+## 4. No label exceeds 55% of the labeled set
 
+In `labels.csv`, no single label accounts for more than 55% of the
+rows.
 
+**Why this target:** The brief's hard cap is 70%, but 70% is where a
+model starts defaulting to the majority label. I set 55% so my labels
+are balanced enough that a majority-class guesser scores around 0.55
+at best, forcing the model to learn the distinctions. I could set 45%
+as a target, but I can't control what the community actually posts —
+55% is the balance I can plausibly hold while labeling.
+
+---
+
+## 5. Same seed produces the same accuracy to three decimals
+
+Running the notebook twice with the same seed and the same data
+produces the same accuracy to three decimal places.
+
+**Why this target:** Reproducibility is binary — either the training
+pipeline is deterministic or it isn't. If two runs with the same seed
+disagree, there is a nondeterminism bug (a missing seed, a
+non-deterministic data loader, a random augmentation) and no other
+criterion can be trusted. Three decimal places is strict enough to
+catch any real drift; looser would let a one-post flip through.
 
 ---
 
