@@ -130,66 +130,61 @@ for a preset conclusion, so it is `hot_take`.
 
 ## The Dataset
 
-<!-- Where you collected from, how you labelled, your counts, and three hard
-     cases. -->
+**Where the posts came from:** Public text posts from r/nba, collected via the Arctic Shift Reddit archive API. I only kept posts with sufficient text (filtered out highlights, videos, and pure links) to ensure the model had actual content to classify.
 
-**Where the posts came from:**
-
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** I manually labeled the first 20 posts without any AI help to establish a baseline (`cold`). For the remaining 160 posts, I used an AI tool to pre-label batches based on my definitions, then manually reviewed and corrected every single one (`pre-labeled`).
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `reaction` | 114 | 63.3% |
+| `analysis` | 46 | 25.6% |
+| `hot_take` | 18 | 10.0% |
+| `meme` | 2 | 1.1% |
+| **Total** | 180 | 100% |
 
 **Three hard cases**
 
-<!-- Any post that made you pause: what it was, which two labels it could have
-     been, and what you chose. These are worth more than the easy 190. -->
-
 **1.**
-> *The post:*
->
-> *Could have been:*
->
-> *I chose, because:*
+> *The post:* "Suns owner Matt Ishbia on trading for Kevin Durant... Kevin durant then claps back on Twitter..."
+> *Could have been:* `hot_take` / `reaction`
+> *I chose `reaction`, because:* It's a direct transcript of a social media beef. Although it involves strong opinions, it's primarily reporting immediate emotional responses rather than a standalone argument.
 
 **2.**
-> *The post:*
->
-> *Could have been:*
->
-> *I chose, because:*
+> *The post:* "A decade ago most of this sub was white people. Now it seems there a lot of asians/Indians on here. The most obvious sign is how much engagement Jeremy Lin threads get..."
+> *Could have been:* `hot_take` / `analysis`
+> *I chose `hot_take`, because:* It makes a broad sociological claim without providing checkable evidence or a causal mechanism, aiming mostly to provoke discussion.
 
 **3.**
-> *The post:*
->
-> *Could have been:*
->
-> *I chose, because:*
+> *The post:* "The ""face of the league"" is more of who can gain the most following around their image... Jokic got close since his game is fun to watch..."
+> *Could have been:* `analysis` / `hot_take`
+> *I chose `hot_take`, because:* While long and detailed, it relies on subjective criteria (coolness, jerseys, personality) rather than objective, checkable metrics or tactical mechanisms.
 
 ---
 
 ## The Training Run
 
-<!-- Your starting model, your settings, and anything you changed and why. -->
+**Base model:** The model bundled with the starter notebook (a small pre-trained language model).
 
-**Base model:**
-
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:**
+- Epochs: 3
+- Learning rate: 2e-5
+- Batch size: 16
+- Max sequence length: 128
+- Device: CPU
+- Torch version: 2.14.1+cpu
 
 **Anything I changed from the defaults, and why:**
+Nothing. I ran the notebook with the default settings to establish a baseline for the next unit.
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
+**Split sizes:**
+The notebook automatically splits the data 70/15/15 (train/val/test). With 180 rows, this means roughly:
+- Train: 126
+- Validation: 27
+- Test: 27
 
-
+*Note on `meme`:* With only 2 `meme` examples in the entire dataset, the test split will likely contain 0 or 1 example of this class. This will make the `meme` F1 score extremely volatile and likely very low.
 
 ---
 
