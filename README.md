@@ -252,62 +252,45 @@ The trained model's higher accuracy (0.630) is entirely driven by learning the m
 
 ## Run Log — Before
 
-<!-- Five criteria across three seeds. The notebook's section 6 prints the
-     spread table; the Target and Verdict columns are yours. -->
-
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy ≥ 0.60 | 0.60 | 0.630 | 0.630 | 0.630 | MET |
+| 2. Macro F1 ≥ 0.55 | 0.55 | 0.258 | 0.258 | 0.258 | MISSED |
+| 3. Every label reaches F1 ≥ 0.40 | 0.40 | 0.258 | 0.258 | 0.258 | MISSED |
+| 4. No label exceeds 55% of the labeled set | 55% | 63.3% | 63.3% | 63.3% | MISSED |
+| 5. Same seed produces the same accuracy | = 0.630 | 0.630 | 0.630 | 0.630 | MET |
+
+**Note on seed stability:** The accuracy and Macro F1 were identical (0.000 spread) across all three seeds. This confirms that the training pipeline is deterministic and that the model's collapse (predicting `reaction` for every post) is not a random fluke but a stable behavior caused by the class imbalance.
 
 ### Confusion matrix
 
-<!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
-     An image of a matrix earns nothing. -->
-
-| true \ predicted |  |  |  |
-|---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| true \ predicted | analysis | hot_take | reaction | meme |
+|---|---|---|---|---|
+| **analysis** | 0 | 0 | 7 | 0 |
+| **hot_take** | 0 | 0 | 3 | 0 |
+| **reaction** | 0 | 0 | 17 | 0 |
+| **meme** | 0 | 0 | 0 | 0 |
 
 **My biggest off-diagonal number, and what it means:**
-<!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
-     direction. "7 real analysis posts were called hot_take and only 3 went the
-     other way" is a direction, not just an error rate. -->
-
-
+7 real `analysis` posts were called `reaction`. The model is not confusing one boundary for another; it has completely abandoned all labels except `reaction`. The dominant error direction is strictly one-way (all non-reaction posts go to reaction), which confirms the model's total majority-class collapse.
 
 ---
 
 ## Verdicts and Diagnoses
 
-<!-- MET or MISSED against LAST UNIT's target. The target has to hold across
-     all three seeds, not turn up sometimes. -->
-
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy ≥ 0.60 | 0.60 | **MET** | 0.630 in all three seeds, barely above the target. |
+| 2 | Macro F1 ≥ 0.55 | 0.55 | **MISSED** | 0.258 across all seeds, far below 0.55. |
+| 3 | Every label reaches F1 ≥ 0.40 | 0.40 | **MISSED** | Only `reaction` scored above 0.40; `analysis`, `hot_take`, `meme` all scored 0.000. |
+| 4 | No label exceeds 55% | 55% | **MISSED** | `reaction` is 63.3% of the labeled set, exceeding the target and the hard cap of 70%. |
+| 5 | Same seed accuracy | = 0.630 | **MET** | Seed 42 produced the exact same accuracy (0.630) across multiple runs, confirming deterministic training. |
 
 **Diagnoses**
 
-<!-- For each miss: the cause, and how you know. The four common causes are:
-     too few examples for a label, a boundary you applied inconsistently, a
-     genuinely hard label pair, and a task the model can't reach from this
-     much data.
-
-     ⚠️ Use your agreement report as evidence. It is the only instrument you
-     have that can tell a LABELLING problem from a MODEL problem, and this
-     section is graded on whether you used it that way. -->
-
-
+- **Criterion 2 (Macro F1 MISSED):** The model collapsed and predicted `reaction` for every test example. Macro F1 is 0.258 because three of the four labels have F1=0. This is a task the model could not reach from this much data, compounded by the class imbalance.
+- **Criterion 3 (Every label F1 MISSED):** Same as above. The model did not learn any boundaries for `analysis`, `hot_take`, or `meme`. The 63.3% share of `reaction` in the training data caused the model to default to it.
+- **Criterion 4 (Balance MISSED):** This is a dataset problem, not a model problem. I collected 114 `reaction` posts out of 180, which is 63.3%. I would need to collect more `meme` and `hot_take` posts to fix this, but I ran out of time during Unit 5.
 
 ---
 
