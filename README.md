@@ -288,9 +288,11 @@ The trained model's higher accuracy (0.630) is entirely driven by learning the m
 
 **Diagnoses**
 
-- **Criterion 2 (Macro F1 MISSED):** The model collapsed and predicted `reaction` for every test example. Macro F1 is 0.258 because three of the four labels have F1=0. This is a task the model could not reach from this much data, compounded by the class imbalance.
-- **Criterion 3 (Every label F1 MISSED):** Same as above. The model did not learn any boundaries for `analysis`, `hot_take`, or `meme`. The 63.3% share of `reaction` in the training data caused the model to default to it.
-- **Criterion 4 (Balance MISSED):** This is a dataset problem, not a model problem. I collected 114 `reaction` posts out of 180, which is 63.3%. I would need to collect more `meme` and `hot_take` posts to fix this, but I ran out of time during Unit 5.
+My agreement report reveals a clear pattern: I applied the staff's written rules too loosely, consistently misclassifying posts that had a negative or dismissive tone. This same inconsistency likely infected my own `r/nba` dataset.
+
+- **Criterion 2 (Macro F1 MISSED):** The model collapsed and predicted `reaction` for every test example. This is a *labeling* problem, not just a *model* problem. My agreement check proves I applied boundaries inconsistently, so my training data for `analysis` and `hot_take` is likely noisy. The model learned the dominant signal (`reaction` = majority) because the minority class boundaries were unclear.
+- **Criterion 3 (Every label F1 MISSED):** Same as above. The model did not learn meaningful boundaries for `analysis`, `hot_take`, or `meme` because I failed to label them with high consistency. The 0.000 F1 for `analysis` and `hot_take` is a direct symptom of my own inconsistent labeling, not just a lack of data.
+- **Criterion 4 (Balance MISSED):** This is a dataset collection problem. I have 114 `reaction` posts (63.3%) and only 2 `meme` posts. The imbalance forced the model into a majority-class collapse. I would need to collect more `meme` and `hot_take` posts to fix this.
 
 ---
 
