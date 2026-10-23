@@ -233,25 +233,20 @@ Yes. The first 20 rows were labeled by hand without Claude. The remaining 160 we
 
 ## Baseline vs. Trained
 
-<!-- Both models on the same posts. `python baseline.py --trained results.json`
-     prints this table for you. -->
-
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.296 | 0.630 | +0.333 |
+| Macro F1 | 0.134 | 0.258 | +0.124 |
+| F1 — `analysis` | 0.424 | 0.000 | -0.424 |
+| F1 — `hot_take` | 0.000 | 0.000 | +0.000 |
+| F1 — `meme` | 0.000 | 0.000 | +0.000 |
+| F1 — `reaction` | 0.111 | 0.773 | +0.662 |
 
 **What I predicted before I looked:**
-<!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
-     prediction made afterwards isn't one. -->
+I predicted that the trained model would beat the baseline on overall accuracy, because the baseline is a zero-shot general model that doesn't understand the r/nba context. However, given that my trained model previously collapsed and predicted `reaction` for everything, I expected the gap to be relatively small, with both models struggling on minority labels like `hot_take` and `meme`.
 
 **What the gap actually means:**
-<!-- If the baseline matched your trained model, your fine-tuning added
-     nothing — and that is a real finding, not a failure. Say it plainly. -->
-
-
+The trained model's higher accuracy (0.630) is entirely driven by learning the majority class (`reaction`), which makes up 63% of the data. The baseline has a *higher* F1 on `analysis` (0.424 vs 0.000), meaning the fine-tuned model actively forgot how to classify `analysis` in order to maximize accuracy on `reaction`. This is a classic case of majority-class collapse, confirming that the fine-tuning process learned the class distribution but not the underlying boundaries between labels.
 
 ---
 
