@@ -296,54 +296,30 @@ The trained model's higher accuracy (0.630) is entirely driven by learning the m
 
 ## Agreement Report
 
-<!-- Your rate against the staff set, and every disagreement adjudicated.
-
-     Remember you labelled these 30 under the STAFF taxonomy in
-     data/staff_taxonomy.md, not your own — so every argument below is made
-     from those definitions and those decision rules. -->
-
-**Agreement rate:** ___ / 30 = ___%
-
-<!-- Nobody grades this number. A 60% who argues every disagreement from the
-     stated rules beats a 95% who wrote "staff was right" nine times. Several
-     of the 30 were chosen because they're genuinely ambiguous — you should be
-     winning some of these. -->
+**Agreement rate:** 28 / 30 = 93%
 
 **Disagreements**
 
-<!-- Three lines each: the post, both labels, and who you think is right and
-     why — grounded in the staff definitions you were both applying.
-
-     Then sort each into one of three piles:
-       (a) the rule covered it and I applied it loosely → a consistency problem
-       (b) the rule genuinely doesn't say               → a gap in the definitions
-       (c) the rule is ambiguous here and my reading is defensible → argue it.
-           This is a legitimate win.
-
-     Pile (a) is the one that matters most for your diagnosis: if you applied a
-     written rule two different ways on 30 posts, that is direct evidence about
-     what you did across your own 200. -->
-
 **1.**
-> *The post:*
+> *The post:* "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that changed was going from 35 to 50 miles a week."
 >
-> *Staff said / I said:*
+> *Staff said / I said:* Staff said `analysis` / I said `hot_take`
 >
-> *My call, and why:*
+> *My call, and why:* Staff is right, and I applied the rule loosely. Rule 1 states that a fact must carry the argument. The author here uses two specific numbers (2% and 2%) to actively dismantle the claim that "shoes are the whole story." The fact does the argumentative work. I mistakenly downgraded it to `hot_take` because the writer's overall tone is dismissive, but under the staff's rule, the checkable facts are load-bearing.
 >
-> *Which pile:*
+> *Which pile:* (a) the rule covered it and I applied it loosely — a consistency problem.
 
 **2.**
-> *The post:*
+> *The post:* "Third DNF this year. I don't really want to talk about it, just wanted to put it somewhere."
 >
-> *Staff said / I said:*
+> *Staff said / I said:* Staff said `reaction` / I said `hot_take`
 >
-> *My call, and why:*
+> *My call, and why:* Staff is right, and this is a limitation of my own definition reading. Rule 2 states that a `reaction` reports what just happened to the writer and how it felt. The phrase "this year" plus "wanted to put it somewhere" shows an immediate, personal emotional response to a recent event (a DNF). I classified it as `hot_take` because "Third DNF" feels like a summary statement, but the staff taxonomy includes this as an immediate emotional disclosure, not a general claim about the world.
 >
-> *Which pile:*
+> *Which pile:* (a) the rule covered it and I applied it loosely — a consistency problem.
 
 **What the pattern in my disagreements tells me:**
-
+Both disagreements fall into pile (a) — I applied the staff's written rules too loosely. The pattern is that I tend to over-classify things as `hot_take` when the tone is negative or dismissive, ignoring the underlying structural features of the text. Rule 1 (load-bearing facts) and Rule 2 (personal immediate experience) both point to the staff being correct. This suggests that when I labeled my own `r/nba` dataset, I likely made similar errors on negative-sounding posts, treating facts as decoration or personal reactions as opinions. This is a significant, actionable diagnosis for my model's failure.
 
 
 ---
