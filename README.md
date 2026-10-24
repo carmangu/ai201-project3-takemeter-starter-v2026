@@ -220,6 +220,12 @@ The model predicted `reaction` on every test example, which gives 63% accuracy b
 - *What came back:* Its labels for `reaction` and `hot_take` were good, but it over-labeled `analysis` for posts that used stats without proposing a mechanism. That is exactly the boundary I had written a rule for, applied the wrong way.
 - *What I changed:* I manually re-checked every AI-labeled row against my decision rule and corrected the `analysis` → `hot_take` errors. Every row in `labels.csv` marked `pre-labeled` was reviewed by me after AI pre-labeling; the first 20 rows are marked `cold` because I labeled them with no help.
 
+**Moment 3 — Unit 6**
+
+- *What I asked for:* After running the agreement check and seeing two disagreements with the staff, I asked an AI to look at the two posts and the staff definitions and argue the strongest case for *both* labels, without telling me which was right.
+- *What came back:* For the `analysis` vs `hot_take` disagreement (post sp_005), the AI noted that the two "2%" figures were not just decorations — the author explicitly used them to undermine the "shoes are the whole story" claim. Under Rule 1, the fact carries the argument, so the staff label (`analysis`) was correct.
+- *What I changed:* I had originally labelled it `hot_take` because the tone was dismissive. After reading the AI's argument, I revised my understanding and acknowledged in my agreement report that both disagreements were pile (a) — I had applied the staff's rules too loosely. This directly informed my diagnosis that my own `r/nba` labels likely suffered from the same inconsistency.
+
 **Pre-labelling disclosure:**
 
 Yes. The first 20 rows were labeled by hand without Claude. The remaining 160 were Claude pre-labeled and then manually reviewed and corrected. `meme` has only 2 examples total — that is not a pre-labeling error, it is a genuine scarcity in the data.
@@ -353,15 +359,13 @@ This is a genuine finding: **adding data to the minority class helps balance the
 
 ## What's Still Broken
 
-<!-- For each criterion still missed: what you'd do, and why you stopped. -->
+- **Criterion 1 (Overall accuracy):** MISSED after the improvement (0.562 < 0.60). I would need more training data and a more sophisticated model (e.g., a larger model or a different learning rate schedule) to push this above 0.60.
+- **Criterion 2 (Macro F1):** MISSED (0.240 < 0.55). The model still cannot learn `analysis` and `hot_take` at all. I stopped here because adding more `hot_take` data helped balance the dataset but didn't solve the fundamental issue that the labels are hard to distinguish from short text alone.
+- **Criterion 3 (Every label F1 ≥ 0.40):** MISSED. Same root cause as Criterion 2. `analysis` and `hot_take` both have F1 = 0.000. I would need to either collect 100+ examples per label or use a model that can handle nuanced distinctions.
+- **Criterion 4 (No label exceeds 55%):** MET. This was the one criterion the improvement addressed directly, and it succeeded (63.3% → 54.3%).
 
-
-
-**The gap between what I meant my labels to capture and what the model
-learned:**
-<!-- Two sentences. Your confusion matrix is the evidence. -->
-
-
+**The gap between what I meant my labels to capture and what the model learned:**
+My labels were meant to capture a spectrum from pure emotion (`reaction`) to argument (`analysis`) to opinion (`hot_take`). The model learned only that `reaction` is the safest guess because it appears in over half the data. The confusion matrix shows that every non-`reaction` post (all 14 of them) was classified as `reaction`, meaning the model has no concept of the boundaries I defined in my taxonomy.
 
 <!-- ═════════════════════════════════════════════════════════════════════
 
