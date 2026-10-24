@@ -328,26 +328,26 @@ Both disagreements fall into pile (a) — I applied the staff's written rules to
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** I added 30 new `hot_take` posts to the training data, increasing the total from 180 to 210. This reduced `reaction`'s share from 63.3% to 54.3% and brought `hot_take` from 10.0% to 22.9%, making the dataset more balanced.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** My diagnosis for Criterion 4 (MISSED) showed that `reaction` at 63.3% was the majority class, causing the model to collapse into predicting it for every test example. By increasing `hot_take` examples, I aimed to force the model to learn a second class.
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy ≥ 0.60 | 0.60 | 0.562 | 0.562 | 0.562 | **MISSED** |
+| 2. Macro F1 ≥ 0.55 | 0.55 | 0.240 | 0.240 | 0.240 | **MISSED** |
+| 3. Every label reaches F1 ≥ 0.40 | 0.40 | 0.240 | 0.240 | 0.240 | **MISSED** |
+| 4. No label exceeds 55% of the labeled set | 55% | 54.3% | 54.3% | 54.3% | **MET** |
+| 5. Same seed produces the same accuracy | = 0.562 | 0.562 | 0.562 | 0.562 | **MET** |
 
 **Did it help, and how do I know:**
+The improvement helped with **Criterion 4 (Balance)** — the label share dropped from 63.3% to 54.3%, bringing it below the 55% target. It also moved the model away from pure majority-class collapse.
 
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
+However, it made the other criteria slightly worse: overall accuracy dropped from 0.630 to 0.562, and macro F1 from 0.258 to 0.240. This is because the dataset is now more balanced, so the "easy" 63% accuracy from guessing `reaction` is no longer available. The model still fails to learn `analysis` and `hot_take` entirely (both F1 = 0.000).
 
-
+This is a genuine finding: **adding data to the minority class helps balance the dataset but doesn't solve the underlying problem that the model cannot distinguish between the three labels from only ~30 examples per class in the test split.**
 
 ---
 
